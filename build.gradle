@@ -31,3 +31,13 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+apply plugin: 'checkstyle'
+
+checkstyle {
+	toolVersion = '8.31'
+	config = rootProject.resources.text.fromFile('config/checkstyle/checkstyle.xml')
+	checkstyleMain.source = './'
+	checkstyleMain.exclude('**/node_modules/**', '**/build/**', '**/generated-sources/**')
+	checkstyleMain.include('**/*.java')
+}

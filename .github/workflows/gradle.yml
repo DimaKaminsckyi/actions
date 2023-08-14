@@ -36,6 +36,12 @@ jobs:
           chmod +x ./gradlew
           ./gradlew bootJar                
 
+      - name: Checkstyle
+        run: ./gradlew checkstyleMain checkstyleTest
+
+      - name: Unit Tests
+        run: ./gradlew test
+
       - name: Copy Jar file
         run: mv build/libs/$(ls build/libs) Learn-GitHub-Actions-0.0.1-SNAPSHOT.jar
 
