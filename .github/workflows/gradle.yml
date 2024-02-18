@@ -72,15 +72,18 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Get version from YAML
+      - name: Get current version or set default
         id: get-version
-        run: echo "VERSION=$(jq -r '.version' ../application-version.yml)" >> $GITHUB_ENV
+        run: echo "VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo '1.0.0')" >> $GITHUB_ENV
+
+      - name: Increment version
+        run: echo "VERSION=$(echo ${{ env.VERSION }} | awk -F. '{$NF+=1}1' OFS=. | tr -d '[:space:]')" >> $GITHUB_ENV
 
 
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: ..
+          context: .
           push: true
           tags: |
             dkamjo/learn-actions:latest
