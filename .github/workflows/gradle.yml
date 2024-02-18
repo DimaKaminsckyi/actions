@@ -72,8 +72,10 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Set env
-        run: echo "DATE=$(date +'%d.%m.%Y')" >> $GITHUB_ENV
+      - name: Get version from YAML
+        id: get-version
+        run: echo "VERSION=$(jq -r '.version' application-version.yml)" >> $GITHUB_ENV
+
 
       - name: Build and push
         uses: docker/build-push-action@v3
@@ -82,4 +84,4 @@ jobs:
           push: true
           tags: |
             dkamjo/learn-actions:latest
-            dkamjo/learn-actions:${{ env.DATE }}
+            dkamjo/learn-actions:${{ env.VERSION }}
