@@ -80,4 +80,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: dkamjo/learn-actions:${{ env.DATE }}
+          tags: |
+            dkamjo/learn-actions:latest
+            dkamjo/learn-actions:${{ env.DATE }}
